@@ -90,26 +90,6 @@ class ft_net(nn.Module):
         x = self.classifier(x)
         return x
 
-
-# Define the ghost_net-based Model
-class gh_net(nn.Module):
-
-    def __init__(self, class_num, droprate=0.5, stride=2):
-        super(gh_net, self).__init__()
-        model_gh = ghost_net(width_mult=1.0)
-        
-        model_gh.avgpool = nn.AdaptiveAvgPool2d((1,1))
-        self.model = model_gh
-        self.classifier = ClassBlock(1280, class_num, droprate)
-
-    def forward(self, x):
-        x = self.features(x)
-        x = self.squeeze(x)
-        x = x.view(x.size(0), -1)
-        x = self.classifier(x)
-        return x
-
-
 # Define the DenseNet121-based Model
 class ft_net_dense(nn.Module):
 
@@ -251,6 +231,25 @@ class PCB_test(nn.Module):
         x = self.avgpool(x)
         y = x.view(x.size(0),x.size(1),x.size(2))
         return y
+
+# Define the ghost_net-based Model
+class GhostNet(nn.Module):
+
+    def __init__(self, class_num, droprate=0.5, stride=2):
+        super(GhostNet, self).__init__()
+        model_gh = ghost_net(width_mult=1.0)
+        model_gh.avgpool = nn.AdaptiveAvgPool2d((1,1))
+        #model_gh.fc = nn.Sequential()
+        self.model = model_gh
+        self.classifier = ClassBlock(960, class_num, droprate)
+
+    def forward(self, x):
+        x = self.model.features(x)
+        x = self.model.squeeze(x)
+        x = x.view(x.size(0), -1)
+        x = self.classifier(x)
+        return x
+
 '''
 # debug model structure
 # Run this code with:
@@ -259,7 +258,7 @@ python model.py
 if __name__ == '__main__':
 # Here I left a simple forward function.
 # Test the model, before you train it. 
-    net = ft_net(751, stride=1)
+    net = GhostNet(751, stride=1)
     net.classifier = nn.Sequential()
     print(net)
     input = Variable(torch.FloatTensor(8, 3, 256, 128))
