@@ -317,7 +317,7 @@ else:
 if opt.PCB:
     model = PCB(len(class_names))
 if opt.GN:
-    model = gh_net(len(class_names))
+    model = GhostNet(len(class_names))
 
 opt.nclasses = len(class_names)
 
