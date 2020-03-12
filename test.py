@@ -17,7 +17,7 @@ import os
 import scipy.io
 import yaml
 import math
-from model import ft_net, ft_net_dense, ft_net_NAS, PCB, PCB_test
+from model import ft_net, ft_net_dense, ft_net_NAS, PCB, PCB_test, GhostNet
 
 #fp16
 try:
@@ -36,6 +36,7 @@ parser.add_argument('--name', default='ft_ResNet50', type=str, help='save model 
 parser.add_argument('--batchsize', default=256, type=int, help='batchsize')
 parser.add_argument('--use_dense', action='store_true', help='use densenet121' )
 parser.add_argument('--PCB', action='store_true', help='use PCB' )
+parser.add_argument('--GN', action='store_true', help='use ghost_net' )
 parser.add_argument('--multi', action='store_true', help='use multiple query' )
 parser.add_argument('--fp16', action='store_true', help='use fp16.' )
 parser.add_argument('--ms',default='1', type=str,help='multiple_scale: e.g. 1 1,1.1  1,1.1,1.2')
@@ -219,7 +220,9 @@ else:
 
 if opt.PCB:
     model_structure = PCB(opt.nclasses)
-
+if opt.GN:
+    model_structure = GhostNet(opt.nclasses)
+    
 #if opt.fp16:
 #    model_structure = network_to_half(model_structure)
 

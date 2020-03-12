@@ -4,7 +4,6 @@ from torch.nn import init
 from torchvision import models
 from torch.autograd import Variable
 import pretrainedmodels
-from ghost_net import ghost_net
 
 ######################################################################
 def weights_init_kaiming(m):
