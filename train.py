@@ -21,6 +21,7 @@ from random_erasing import RandomErasing
 import yaml
 import math
 from shutil import copyfile
+from ghost_net import ghost_net
 
 version =  torch.__version__
 #fp16
@@ -315,6 +316,8 @@ else:
 
 if opt.PCB:
     model = PCB(len(class_names))
+if opt.GN:
+    model = gh_net(len(class_names))
 
 opt.nclasses = len(class_names)
 
