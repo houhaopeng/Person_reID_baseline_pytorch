@@ -48,6 +48,7 @@ parser.add_argument('--warm_epoch', default=0, type=int, help='the first K epoch
 parser.add_argument('--lr', default=0.05, type=float, help='learning rate')
 parser.add_argument('--droprate', default=0.5, type=float, help='drop rate')
 parser.add_argument('--PCB', action='store_true', help='use PCB+ResNet50' )
+parser.add_argument('--GN', action='store_true', help='use ghost_net' )
 parser.add_argument('--fp16', action='store_true', help='use float16 instead of float32, which will save about 50% memory' )
 opt = parser.parse_args()
 
