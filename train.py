@@ -21,6 +21,7 @@ from random_erasing import RandomErasing
 import yaml
 import math
 from shutil import copyfile
+from torchreid import models
 
 version =  torch.__version__
 #fp16
@@ -318,6 +319,8 @@ if opt.PCB:
     model = PCB(len(class_names))
 if opt.GN:
     model = GhostNet(len(class_names))
+if opt.abd:
+    model = models.init_model(name="resnet50", num_classes=751, loss={'xent'}, use_gpu=use_gpu, args=vars(args))
 
 opt.nclasses = len(class_names)
 
@@ -385,5 +388,5 @@ if fp16:
 criterion = nn.CrossEntropyLoss()
 
 model = train_model(model, criterion, optimizer_ft, exp_lr_scheduler,
-                       num_epochs=60)
+                       num_epochs=120)
 
